@@ -45,12 +45,7 @@ pip install pwntools --user
 ```
 
 ## Building
-```bash
-mkdir build
-cd build
-cmake ..
-make
-```
+Just install all listed dependencies and execute `./build.sh`
 
 ## Noise Reduction
 To get precise results Osiris relies on the operating system to reduce the noise of its

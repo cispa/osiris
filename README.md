@@ -1,6 +1,6 @@
 # Osiris
 This repository contains the implementation of the Osiris framework discussed 
-in the research paper "Osiris: Automated Discovery of Microarchitectural Side Channels" (USENIX Security'21).
+in the research paper "Osiris: Automated Discovery of Microarchitectural Side Channels" (USENIX Security'21). You can find the paper at TODO.
 
 The framework is developed to find microarchitectural side channels in an automated manner.
 Currently the implementation supports only x86 processors.

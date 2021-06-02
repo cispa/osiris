@@ -114,6 +114,7 @@ The behavior can be changed with the following parameters:
 | `--all`          | Removes the assumption that the trigger sequence is equal to the measurement sequence. |
 | `--speculation`  | Executes the trigger sequence only in transient execution.                             |
 | `--filter-cache` | Removes cache-based side channel from the final report                                 |
+
 (Please note that the positional parameter for the CPU core always has to be the first argument, e.g., `./run.sh 11 --speculation --all`)
 
 
@@ -193,17 +194,20 @@ With:
 Many programs exist which can parse these CSV files. 
 We like to use Microsoft Excel or LibreOffice Calc.
 #### Example
-The following is an example of a reported sequence triple.
+The following is an example of a reported sequence triple. The output is formatted as a table for better readability.
+
+|timing|measurement-uid|measurement-sequence|measurement-category|measurement-extension|measurement-isa-set|trigger-uid|trigger-sequence|trigger-category|trigger-extension|trigger-isa-set|reset-uid|reset-sequence                 |reset-category|reset-extension|reset-isa-set|
+|------|---------------|--------------------|--------------------|---------------------|-------------------|-----------|----------------|----------------|-----------------|---------------|---------|-------------------------------|--------------|--------------|--------------|
+|182   |551c05b2	   |`INC byte ptr [R8]`	|        BINARY	     |               BASE  |             I86   |551c05b2   |`INC byte ptr [R8]`|	   BINARY|          BASE   |         I86   |551c08ca |`CLFLUSHOPT zmmword ptr [R8]`	 |   CLFLUSHOPT	|   CLFLUSHOPT |   CLFLUSHOPT |
+
+
 We can see that Osiris observed a timing difference of 182 CPU cycles and that the
 measurement, i.e., the sequence whose timing was observed, 
 and the trigger sequence, i.e. the instruction sequence that lead to a timing delta, 
 were `INC byte ptr [R8]`. 
 The reset sequence, i.e. the sequence that reset the microarchitectural state, was `CLFLUSH zmmword ptr [R8]`.
 Flushing a memory address from the CPU cache and triggering a side channel by loading it again is a well-known side channel known as Flush+Reload.
-```
-timing	measurement-uid	measurement-sequence	measurement-category	measurement-extension	measurement-isa-set	trigger-uid	 trigger-sequence	trigger-category	trigger-extension	trigger-isa-set	reset-uid	      reset-sequence	       reset-category	reset-extension	  reset-isa-set
-182	       551c05b2	      INC byte ptr [R8]	         BINARY	                    BASE	             I86	         551c05b2	 INC byte ptr [R8]	     BINARY	               BASE	               I86	    551c08ca	CLFLUSHOPT zmmword ptr [R8]	     CLFLUSHOPT	       CLFLUSHOPT	    CLFLUSHOPT
-```
+
 
 ## Contact
 If there are questions regarding this tool, please send an email to `daniel.weber (AT) cispa.saarland` or message `@weber_daniel` on Twitter.

@@ -11,28 +11,28 @@ Hence, we expect Osiris to work on other Linux distributions as well but we did 
 
 ## Dependencies
 #### g++
-- arch-linux-package: `gcc`
-- ubuntu-package: `g++`
+- Arch-Linux-package: `gcc`
+- Ubuntu-package: `g++`
 
 #### make
-- arch-linux-package: `make`
-- ubuntu-package: `make`
+- Arch-Linux-package: `make`
+- Ubuntu-package: `make`
 
 #### CMake
-- arch-linux-package: `cmake`  
-- ubuntu-package: `cmake`
+- Arch-Linux-package: `cmake`  
+- Ubuntu-package: `cmake`
 
 #### Capstone  
-- arch-linux-package: `capstone`  
-- ubuntu-packages: `libcapstone-dev, libcapstone3`
+- Arch-Linux-package: `capstone`  
+- Ubuntu-packages: `libcapstone-dev, libcapstone3`
 
 #### OpenSSL
-- arch-linux-package: `openssl`  
-- ubuntu-package: `libssl-dev`
+- Arch-Linux-package: `openssl`  
+- Ubuntu-package: `libssl-dev`
 
 #### Pwntools (required only for `x86-instructions/xmlToBytes_multi.py`)
-On ubuntu:
-```
+On Ubuntu:
+```bash
 apt-get update
 apt-get install python3 python3-dev python3-pip git
 pip3 install --upgrade git+https://github.com/arthaud/python3-pwntools.git
@@ -40,7 +40,7 @@ pip3 install --upgrade git+https://github.com/arthaud/python3-pwntools.git
 (taken from: https://github.com/arthaud/python3-pwntools)
 
 On Arch-Linux:
-```
+```bash
 pip install pwntools --user
 ```
 
@@ -79,21 +79,10 @@ these changes.
 If you missed this opportunity, a simple restart of your operating system should also do the trick.
 
 
-
-
-
-
-
 ## Run
 ### Create x86 Instruction Set (optional)
 This step is optional as we already provide the output of it inside `./x86-instructions`.
-
-Assemble all instructions provided by the instruction.xml from [uops.info](https://www.uops.info/xml.html)
-using the following command:
-```
-./xmlToBytes_multi.py instructions.b64
-```
-(as this step takes a couple minutes, we already did that for you and added the resulting `instructions.b64` to this repo)
+You can find instructions for this step in the [README](https://github.com/cispa/osiris/tree/main/x86-instructions) of `./x86-instructions`
 
 ### Start Fuzzing
 You can start the main part of the framework using `./run.sh $CPUCORE` where `$CPUCORE` is
@@ -108,7 +97,7 @@ The behavior can be changed with the following parameters:
 | ---------------- | -------------------------------------------------------------------------------------- |
 | `--all`          | Removes the assumption that the trigger sequence is equal to the measurement sequence. |
 | `--speculation`  | Executes the trigger sequence only in transient execution.                             |
-| `--filter-cache` | Removes cache-based side channel from the final report                                 |
+| `--filter-cache` | Removes cache-based side channels from the final report.                               |
 
 (Please note that the positional parameter for the CPU core always has to be the first argument, e.g., `./run.sh 11 --speculation --all`)
 
@@ -163,7 +152,7 @@ As these files are only used for development we will not describe them further.
 ## Output Format
 
 ### Instruction File
-The file contains of descriptions of instruction variants. One per line (excluding the first line).
+The file (`./x86-instructions/instructions.b64`) contains descriptions of instruction variants. One per line (excluding the first line).
 The Format is as follows:
 ```
 BR;AC;CATEGORY;EXTENSION;ISA-SET
@@ -181,9 +170,9 @@ timing;M;T;R
 ```
 With:
 - `timing`: The observed timing difference in cycles between executions with and without the trigger sequence
-- `M`: the measurement sequence consisting of an internal UID and the properties already mentioned previously (see Instruction File)
-- `T`: the trigger sequence consisting of an internal UID and the properties already mentioned previously (see Instruction File)
-- `R`: the reset sequence consisting of an internal UID and the properties already mentioned previously (see Instruction File)
+- `M`: the measurement sequence consisting of an internal UID and the properties already mentioned previously (see "Instruction File")
+- `T`: the trigger sequence consisting of an internal UID and the properties already mentioned previously (see "Instruction File")
+- `R`: the reset sequence consisting of an internal UID and the properties already mentioned previously (see "Instruction File")
 
 ### Visualize Output
 Many programs exist which can parse these CSV files. 
@@ -197,18 +186,18 @@ The following is an example of a reported sequence triple. The output is formatt
 
 
 We can see that Osiris observed a timing difference of 182 CPU cycles and that the
-measurement, i.e., the sequence whose timing was observed, 
+measurement sequence, i.e., the sequence whose timing was observed, 
 and the trigger sequence, i.e. the instruction sequence that lead to a timing delta, 
 were `INC byte ptr [R8]`. 
 The reset sequence, i.e. the sequence that reset the microarchitectural state, was `CLFLUSH zmmword ptr [R8]`.
-Flushing a memory address from the CPU cache and triggering a side channel by loading it again is a well-known side channel known as Flush+Reload.
+Flushing a memory address from the CPU cache and triggering a side channel by loading it again is a well-known side channel known as [Flush+Reload](https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-yarom.pdf).
 
 
 ## Contact
 If there are questions regarding this tool, please send an email to `daniel.weber (AT) cispa.saarland` or message `@weber_daniel` on Twitter.
 
 ## Research Paper
-The paper at available at TODO. 
+The paper is available at TODO. 
 You can cite our work with the following BibTeX entry:
 ```latex
 @inproceedings{Weber2021,

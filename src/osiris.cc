@@ -120,7 +120,7 @@ void ConfirmResultsOfFuzzer(const std::string& input_file, const std::string& ou
                                  reset.byte_representation,
                                  true, 200,
                                  reset_amount, &result);
-    LOG_DEBUG(measurement.assembly_code + ": " + std::to_string(result));
+    LOG_INFO("Confirming " + measurement.assembly_code + " -- observed delta: " + std::to_string(result));
 
     // write result to file
     std::string line_without_timing = line.substr(line.find(';') + 1);
@@ -229,8 +229,10 @@ CommandLineArguments ParseArguments(int argc, char** argv) {
 int main(int argc, char* argv[]) {
   if (DEBUGMODE) {
     LOG_WARNING("Started in DEBUGMODE");
+    osiris::SetLogLevel(osiris::DEBUG);
+  } else {
+    osiris::SetLogLevel(osiris::INFO);
   }
-  osiris::SetLogLevel(osiris::DEBUG);
   CommandLineArguments command_line_arguments = ParseArguments(argc, argv);
 
   //

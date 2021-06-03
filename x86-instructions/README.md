@@ -11,3 +11,9 @@ using the following command:
 ./xmlToBytes.py instructions.b64
 ```
 (as this step takes a couple minutes, we already did that for you and added the resulting `instructions.b64` to this repo)
+
+If you want to add the sleep pseudo-instruction to the instruction set, you have to use the following command instead:
+```bash
+./fetch-uops-info-xml.sh
+./xmlToBytes.py instructions.b64 --include-sleep
+```

@@ -2,3 +2,4 @@ build
 cmake-build-debug
 .idea
 instructions.xml
+instructions_cleaned.b64

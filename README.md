@@ -82,6 +82,9 @@ If you missed this opportunity, a simple restart of your operating system should
 ## Run
 ### Create x86 Instruction Set (optional)
 This step is optional as we already provide the output of it inside `./x86-instructions`.
+The instruction set provided by us does not include the sleep pseudo-instruction.
+For fuzzing with the sleep pseudo-instruction you have to rerun this step with the corresponding
+parameter. 
 You can find instructions for this step in the [README](https://github.com/cispa/osiris/tree/main/x86-instructions) of `./x86-instructions`
 
 ### Start Fuzzing

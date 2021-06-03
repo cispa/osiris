@@ -80,9 +80,14 @@ def worker_func(input_queue, output_queue):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print(f"USAGE: {sys.argv[0]} <output-filename>")
+    if len(sys.argv) != 2 and len(sys.argv) != 3:
+        print(f"USAGE: {sys.argv[0]} <output-filename> [--include-sleep]")
         exit(0)
+
+    include_sleep = False
+    if len(sys.argv) == 3 and sys.argv[2] == "--include-sleep":
+        include_sleep = True
+
     output_fname = sys.argv[1]
 
     context.arch = "amd64"
@@ -97,7 +102,9 @@ def main():
                                                  "pseudo-instruction",
                                                  "pseudo-instruction")
     busy_sleep_pseudo_inst.set_base64_encoded_byte_representation(busy_sleep)
-    pseudo_instructions.append(busy_sleep_pseudo_inst)
+
+    if include_sleep:
+        pseudo_instructions.append(busy_sleep_pseudo_inst)
 
     assembly_instructions = list()
     for instrNode in root.iter('instruction'):
@@ -117,7 +124,7 @@ def main():
         blacklisted_instructions += ["RET", "LEAVE", "LEAVEW", "ENTER", "ENTERW", "LFS", "POPFQ",
                                      "POPFW", "WRFSBASE", "WRGSBASE"]
         blacklisted_iforms = ["POP_FS"]
-        # blacklist instructions that osiris can't handle
+        # blacklist instructions that Osiris can't handle
         blacklisted_instruction_categories = ["UNCOND_BR", "COND_BR", "SYSCALL", "CALL", "RET"]
         if asm_code in blacklisted_instructions:
             continue

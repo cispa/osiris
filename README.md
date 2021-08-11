@@ -34,10 +34,11 @@ Hence, we expect Osiris to work on other Linux distributions as well but we did 
 On Ubuntu:
 ```bash
 apt-get update
-apt-get install python3 python3-dev python3-pip git
-pip3 install --upgrade git+https://github.com/arthaud/python3-pwntools.git
+apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential
+python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade pwntools
 ```
-(taken from: https://github.com/arthaud/python3-pwntools)
+(taken from: https://github.com/Gallopsled/pwntools)
 
 On Arch-Linux:
 ```bash

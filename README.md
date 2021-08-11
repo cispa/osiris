@@ -1,6 +1,6 @@
 # Osiris
 This repository contains the implementation of the Osiris framework discussed 
-in the research paper "Osiris: Automated Discovery of Microarchitectural Side Channels" (USENIX Security'21). You can find a preprint of the paper at the [CISPA publication database](https://publications.cispa.saarland/3431/1/main.pdf).
+in the research paper "Osiris: Automated Discovery of Microarchitectural Side Channels" (USENIX Security'21). You can find the paper at the [USENIX website](https://www.usenix.org/system/files/sec21-weber.pdf).
 
 The framework is developed to find microarchitectural side channels in an automated manner.
 Currently the implementation supports only x86 processors.
@@ -201,7 +201,7 @@ Flushing a memory address from the CPU cache and triggering a side channel by lo
 If there are questions regarding this tool, please send an email to `daniel.weber (AT) cispa.saarland` or message `@weber_daniel` on Twitter.
 
 ## Research Paper
-A preprint of the paper is available at the [CISPA publication database](https://publications.cispa.saarland/3431/1/main.pdf). 
+The paper is available at the [USENIX website](https://www.usenix.org/system/files/sec21-weber.pdf). 
 You can cite our work with the following BibTeX entry:
 ```latex
 @inproceedings{Weber2021,

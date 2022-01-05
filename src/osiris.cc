@@ -40,6 +40,21 @@ const std::string kOutputCSVTriggerEqualsMeasurement("./triggerpairs.csv");
 const std::string kOutputFolderTriggerEqualsMeasurement("./triggerpairs");
 const std::string kOutputFolderFormattedTriggerEqualsMeasurement("./triggerpairs-formatted");
 
+//
+// Validate Target Architecture Macros
+//
+#ifdef INTEL
+  #ifdef AMD
+  static_assert(false, "Multiple target architectures defined! Aborting!");
+  #endif
+#endif
+#ifndef INTEL
+  #ifndef AMD
+  static_assert(false, "No target architecture defined! Aborting!");
+  #endif
+#endif
+
+
 void ConfirmResultsOfFuzzer(const std::string& input_file, const std::string& output_file) {
   // parse input csv with following format:
   //  measurement-sequence;measurement-category;measurement-extension;
@@ -76,6 +91,9 @@ void ConfirmResultsOfFuzzer(const std::string& input_file, const std::string& ou
   int succeeded = 0;
   int failed = 0;
   std::vector<std::tuple<uint64_t, uint64_t, uint64_t, std::string>> inputs;
+  // TODO(dwe): we can go out of memory here
+  //  fix idea: instead of reading all entries at once only read a few (maybe 5mio?)
+  //  and process them as bulks
   while (std::getline(input_stream, line)) {
     std::vector<std::string> line_splitted = osiris::SplitString(line, ';');
     assert(line_splitted.size() == 16);
@@ -230,6 +248,11 @@ int main(int argc, char* argv[]) {
   if (DEBUGMODE) {
     LOG_WARNING("Started in DEBUGMODE");
     osiris::SetLogLevel(osiris::DEBUG);
+#if defined(INTEL)
+    LOG_DEBUG("Osiris was compiled for Intel");
+#elif defined(AMD)
+    LOG_DEBUG("Osiris was compiled for AMD");
+#endif
   } else {
     osiris::SetLogLevel(osiris::INFO);
   }

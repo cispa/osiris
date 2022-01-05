@@ -29,6 +29,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic")
 
+# Set compile flags for target architecture
+if (ARCH STREQUAL INTEL)
+    message(STATUS "Compiling for Intel processor.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DINTEL")
+elseif(ARCH STREQUAL AMD)
+    message(STATUS "Compiling for AMD processor.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAMD")
+else()
+    message(WARNING "Illegal or missing value for target processor. Set '-DARCH=[INTEL|AMD]'. Defaulting to INTEL.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DINTEL")
+endif()
+
 set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DDEBUGMODE=0")
 
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DDEBUGMODE=1 -ggdb")

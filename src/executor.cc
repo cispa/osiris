@@ -527,31 +527,43 @@ void Executor::AddSerializeInstructionToCodePage(int codepage_no) {
 void Executor::AddTimerStartToCodePage(int codepage_no) {
   constexpr char INST_MFENCE[] = "\x0f\xae\xf0";
   constexpr char INST_XOR_EAX_EAX_CPUID[] = "\x31\xc0\x0f\xa2";
-  constexpr char INST_RDTSC[] = "\x0f\x31";
   // note that we can use R10 as it is caller-saved
   constexpr char INST_MOV_R10_RAX[] = "\x49\x89\xc2";
 
-  AddInstructionToCodePage(codepage_no, INST_MFENCE,
-                                                 3);
-  AddInstructionToCodePage(codepage_no, INST_XOR_EAX_EAX_CPUID,
-                                          4);
-  AddInstructionToCodePage(codepage_no, INST_RDTSC,
-                                          2);
+  AddInstructionToCodePage(codepage_no, INST_MFENCE, 3);
+  AddInstructionToCodePage(codepage_no, INST_XOR_EAX_EAX_CPUID, 4);
+#if defined(INTEL)
+  constexpr char INST_RDTSC[] = "\x0f\x31";
+  AddInstructionToCodePage(codepage_no, INST_RDTSC, 2);
+#elif defined(AMD)
+  constexpr char INST_MOV_ECX_1_RDPRU[] = "\xb9\x01\x00\x00\x00\x0f\x01\xfd";
+  // for AMD we use RDPRU to read the APERF register which makes a more stable timer than RDTSC
+  AddInstructionToCodePage(codepage_no, INST_MOV_ECX_1_RDPRU, 8);
+#endif
   // move result to R10 s.t. we can use it later in AddTimerEndToCodePage
   AddInstructionToCodePage(codepage_no, INST_MOV_R10_RAX,3);
 }
 
 void Executor::AddTimerEndToCodePage(int codepage_no) {
-  constexpr char INST_CPUID[] = "\x0f\xa2";
-  constexpr char INST_RDTSCP[] = "\x0f\x01\xf9";
+  constexpr char INST_XOR_EAX_EAX_CPUID[] = "\x31\xc0\x0f\xa2";
   constexpr char INST_SUB_RAX_R10[] = "\x4c\x29\xd0";
   // note that we can use R11 as it is caller-saved
   constexpr char INST_MOV_R11_RAX[] = "\x49\x89\xc3";
 
+#if defined(INTEL)
+  constexpr char INST_RDTSCP[] = "\x0f\x01\xf9";
   AddInstructionToCodePage(codepage_no, INST_RDTSCP, 3);
+#elif defined(AMD)
+  // for AMD we use RDPRU to read the APERF register which makes a more stable timer than RDTSC
+  constexpr char INST_MFENCE[] = "\x0f\xae\xf0";
+  constexpr char INST_MOV_ECX_1_RDPRU[] = "\xb9\x01\x00\x00\x00\x0f\x01\xfd";
+  AddInstructionToCodePage(codepage_no, INST_MFENCE, 3);
+  AddInstructionToCodePage(codepage_no, INST_XOR_EAX_EAX_CPUID, 4);
+  AddInstructionToCodePage(codepage_no, INST_MOV_ECX_1_RDPRU, 8);
+#endif
   AddInstructionToCodePage(codepage_no, INST_SUB_RAX_R10, 3);
   AddInstructionToCodePage(codepage_no, INST_MOV_R11_RAX, 3);
-  AddInstructionToCodePage(codepage_no, INST_CPUID, 2);
+  AddInstructionToCodePage(codepage_no, INST_XOR_EAX_EAX_CPUID, 4);
 }
 
 void Executor::AddInstructionToCodePage(int codepage_no,

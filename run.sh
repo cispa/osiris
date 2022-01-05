@@ -83,7 +83,7 @@ if [ "$all" = true ]
 then
   echo "[+] Starting fuzzer without assumptions on CPU core ${CPU_NO}..."
   taskset -c $CPU_NO ./osiris --all $speculation_argument
-  output_base_filename="measure_trigger_pairs_spectrigger"
+  output_base_filename="measure_trigger_pairs"
 else
   echo "[+] Starting fuzzer with trigger==measurement assumption on CPU core ${CPU_NO}..."
   taskset -c $CPU_NO ./osiris $speculation_argument

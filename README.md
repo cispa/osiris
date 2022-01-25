@@ -10,7 +10,7 @@ Osiris is developed and tested on Arch Linux and Ubuntu.
 Hence, we expect Osiris to work on other Linux distributions as well but we did not test it.
 
 ## Dependencies
-#### g++
+#### g++ (requires atleast version 8.0)
 - Arch-Linux-package: `gcc`
 - Ubuntu-package: `g++`
 

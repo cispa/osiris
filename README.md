@@ -1,4 +1,6 @@
-# Osiris
+# Osiris 
+[![DOI](https://zenodo.org/badge/366643939.svg)](https://doi.org/10.5281/zenodo.15594584)
+
 This repository contains the implementation of the Osiris framework discussed 
 in the research paper "Osiris: Automated Discovery of Microarchitectural Side Channels" (USENIX Security'21). You can find the paper at the [USENIX website](https://www.usenix.org/system/files/sec21-weber.pdf).
 
